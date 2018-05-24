@@ -1,0 +1,105 @@
+
+<template>
+  <div id="app">
+    <!-- 头部导航 -->
+    <header class="header">
+      <el-row>
+        <el-col :span="24">
+          <el-menu default-active="5" class="el-menu-demo" mode="horizontal" @select="1">
+            <el-menu-item index="1">高级插件</el-menu-item>
+            <el-menu-item index="2">在线商城</el-menu-item>
+            <el-menu-item index="3">客户管理</el-menu-item>
+            <el-menu-item index="4">系统设置</el-menu-item>
+            <el-menu-item index="5">活动发布</el-menu-item>
+          </el-menu>
+        </el-col>
+      </el-row>
+    </header>
+    <div style="position: relative;height: 60px;width: 100%;"></div>
+
+    <main>
+      <!-- 左侧导航 -->
+      <div class="main-left">
+        <el-menu default-active="/activePublic" class="el-menu-vertical-demo" :router="true">
+          <el-menu-item index="/activePublic" :class="{'isActive': active}">活动发布</el-menu-item>
+          <el-menu-item index="/activeManage" :class="{'isActive': !active}">活动管理</el-menu-item>
+        </el-menu>
+      </div>
+
+      <!-- 右侧主内容区 -->
+      <div  class="main-right" >
+        <div id="jsmind_container"></div>
+      </div>
+    </main>
+  </div>
+</template>
+<script>
+import jsMind from 'jsmind'
+export default {
+  name: 'App',
+  data: function () {
+    return {
+      active: true
+    }
+  },
+  created: function () {
+    this.load_jsmind()
+  },
+  methods: {
+    load_jsmind: function () {
+      var mind = {
+        'meta': {
+          'name': 'demo',
+          'author': 'hizzgdev@163.com',
+          'version': '0.2'
+        },
+        'format': 'node_array',
+        'data': [
+          {'id': 'root', 'isroot': true, 'topic': 'jsMind'},
+
+          {'id': 'sub1', 'parentid': 'root', 'topic': 'sub1', 'background-color': '#0000ff'},
+          {'id': 'sub11', 'parentid': 'sub1', 'topic': 'sub11'},
+          {'id': 'sub12', 'parentid': 'sub1', 'topic': 'sub12'},
+          {'id': 'sub13', 'parentid': 'sub1', 'topic': 'sub13'},
+
+          {'id': 'sub2', 'parentid': 'root', 'topic': 'sub2'},
+          {'id': 'sub21', 'parentid': 'sub2', 'topic': 'sub21'},
+          {'id': 'sub22', 'parentid': 'sub2', 'topic': 'sub22', 'foreground-color': '#33ff33'},
+
+          {'id': 'sub3', 'parentid': 'root', 'topic': 'sub3'}
+        ]
+      }
+      var options = {
+        container: 'jsmind_container',
+        editable: true,
+        theme: 'primary'
+      }
+      var jm = jsMind.show(options, mind)
+      // jm.set_readonly(true);
+      // var mind_data = jm.get_data();
+      // alert(mind_data);
+      jm.add_node('sub2', 'sub23', 'new node', { 'background-color': 'red' })
+      jm.set_node_color('sub21', 'green', '#ccc')
+    }
+  }
+}
+</script>
+
+<style>
+  body{margin: 0;}
+  #app {
+    min-width: 1200px;
+    margin: 0 auto;
+    font-family: "Helvetica Neue", "PingFang SC", Arial, sans-serif;
+  }
+  /* 头部导航 */
+  header{z-index: 1000;min-width: 1200px;transition: all 0.5s ease;  border-top: solid 4px #3091F2;  background-color: #fff;  box-shadow: 0 2px 4px 0 rgba(0,0,0,.12),0 0 6px 0 rgba(0,0,0,.04);  }
+  header.header-fixed{position: fixed;top: 0;left: 0;right: 0;}
+  header .el-menu-demo{padding-left: 300px!important;}
+
+  /* 主内容区 */
+  main{    display: -webkit-box;  display: -ms-flexbox;  display: flex;  min-height: 800px;  border: solid 40px #E9ECF1;  background-color: #FCFCFC;  }
+  main .main-left{text-align: center;width: 200px;float: left;}
+  main .main-right{-webkit-box-flex: 1;  -ms-flex: 1;  flex: 1;  background-color: #fff; padding: 50px 70px; }
+  main .el-menu{background-color: transparent!important;}
+</style>
